@@ -13,7 +13,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
  */
     (email, log, record, search, url, serverWidget) => {
         /**
-         * Defines the Suitelet script trigger point.
+         * Defines the Suitelet script trigger point
          * @param {Object} scriptContext
          * @param {ServerRequest} scriptContext.request - Incoming request
          * @param {ServerResponse} scriptContext.response - Suitelet response
