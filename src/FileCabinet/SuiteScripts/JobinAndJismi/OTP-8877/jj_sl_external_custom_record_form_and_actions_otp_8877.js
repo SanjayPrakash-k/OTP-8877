@@ -1,6 +1,6 @@
 /**
  * @NApiVersion 2.1
- * @NScriptType MapReduce
+ * @NScriptType Suitelet
  * @NModuleScope SameAccount
  */
 /*************************************************************************************
