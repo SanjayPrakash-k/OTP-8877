@@ -15,7 +15,7 @@
  *
  * Author: Jobin and Jismi IT Services
  *
- * Date Created : 02-June-2025
+ * Date Created : 26-May-2025
  *
  * Description : This script is for creating custom record externally without having access to NetSuite. Fetch the details
  * through the form created using Suitelet and check the email already exist in the customer record. If the record 
