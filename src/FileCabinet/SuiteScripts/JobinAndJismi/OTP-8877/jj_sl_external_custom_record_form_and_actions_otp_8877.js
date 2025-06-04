@@ -17,9 +17,10 @@
  *
  * Date Created : 02-June-2025
  *
- * Description : This script is for sending email to sales rep(in case sales rep is not assigned, email will be sent to admin
- * with an additional message asking to assign the salesrep for the customer) with attached csv file that contain the last month
- * sales details of customer.
+ * Description : This script is for creating custom record externally without having access to NetSuite. Fetch the details
+ * through the form created using Suitelet and check the email already exist in the customer record. If the record 
+ * do exist, link the record to the custom record. Lastly send emial to NetSuite admin and if salesrep available for the
+ * linked customer, a notification mail will send to salesrep also.
  *
  *
  * REVISION HISTORY
@@ -163,7 +164,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
         }
 
         /**
-        * Function to create record
+        * Function to create custom record
         * @param {integer} internalId: Internal id of the customer if exist or null
         * @param {string} customerEmail: Email of the customer
         * @param {integer} salesRepEmail: Email of the sales rep if exist or null
@@ -257,7 +258,6 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
                 }
             } catch(error) {
                 log.debug('Unexpected error occured during creating record', error.message);
-            }
-            
+            }  
         }
     });
