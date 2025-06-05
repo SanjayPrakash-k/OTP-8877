@@ -101,7 +101,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
                 });
 
             } catch(error) {
-                log.debug('Unexpected error occured while creating form', error.message);
+                log.error('Unexpected error occured while creating form', error.message);
             }
         }
 
@@ -118,7 +118,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
 
                 searchAndCheckCustomerEmail(customerEmail);
             } catch(error) {
-                log.debug('Unexpected error occured when processing email', error.message);
+                log.error('Unexpected error occured when processing email', error.message);
             }
         }
 
@@ -159,7 +159,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
                     });
                 }
             } catch(error) {
-                log.debug('Unexpected Error Occured During Checking Email', error.message);
+                log.error('Unexpected Error Occured During Checking Email', error.message);
             }
         }
 
@@ -257,7 +257,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/url', 'N/ui/serverWidget'
                     log.debug('sales rep email is empty');
                 }
             } catch(error) {
-                log.debug('Unexpected error occured during creating record', error.message);
+                log.error('Unexpected error occured during creating record', error.message);
             }  
         }
     });
