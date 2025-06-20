@@ -4,23 +4,22 @@
  * @NModuleScope SameAccount
  */
 /*************************************************************************************
- ***********
  *
  *
  * ${OTP-8877} : ${External Custom Record form and actions}
  *
  *
  **************************************************************************************
- ********
  *
  * Author: Jobin and Jismi IT Services
  *
  * Date Created : 26-May-2025
  *
- * Description : This script is for creating custom record externally without having access to NetSuite. Fetch the details
- * through the form created using Suitelet and check the email already exist in the customer record. If the record 
- * do exist, link the record to the custom record. Lastly send emial to NetSuite admin and if salesrep available for the
- * linked customer, a notification mail will send to salesrep also.
+ * Description : This script is for creating custom record externally without having 
+ * access to NetSuite. Fetch the details through the form created using Suitelet and 
+ * check the email already exist in the customer record. If the record do exist, link 
+ * the record to the custom record. Lastly send emial to NetSuite admin and if salesrep 
+ * available for the linked customer, a notification mail will send to salesrep also.
  *
  *
  * REVISION HISTORY
@@ -29,8 +28,7 @@
  *
  *
  *
- *************************************************************************************
- **********/
+ *************************************************************************************/
 define(['N/email', 'N/log', 'N/record', 'N/search', 'N/ui/serverWidget'],
     /**
  * @param{email} email
@@ -130,6 +128,8 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/ui/serverWidget'],
 
                     filters: [
                         ["email", "is", customerEmail]
+                        // "AND",
+                        // ["salesrep.isinactive","is","F"]
                     ],
 
                     columns: [
@@ -160,19 +160,18 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/ui/serverWidget'],
                 
                 if(customSearchResult.length === 0){
                     if(customerSearchResult.length === 0){
-                        createRecordAndSendEmail(scriptContext, '', customerEmail, '', '');
+                        createRecordAndSendEmail(scriptContext, '', customerEmail, '');
                     } else {
                         customerSearchResult.forEach(function(result){
                             let internalId = result.getValue('internalid');
                             let customerEmail = result.getValue('email');
-                            let customerName = result.getValue('entityid');
                             let salesRep = result.getValue({name: "internalid", join: 'salesRep'});
 
-                            createRecordAndSendEmail(scriptContext, internalId, customerEmail, customerName, salesRep);
+                            createRecordAndSendEmail(scriptContext, internalId, customerEmail, salesRep);
                         });
                     }
                 } else {
-                    let alertForm = serverWidget.createForm({ title: 'Go Back'});
+                    let alertForm = serverWidget.createForm({title: 'Go Back'});
 
                     alertForm.addField({
                         id: 'custpage_alert_inlinehtml',
@@ -202,6 +201,17 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/ui/serverWidget'],
                 let name = scriptContext.request.parameters.custpage_name;
                 let subject = scriptContext.request.parameters.custpage_subject;
                 let message = scriptContext.request.parameters.custpage_message;
+                let isInactive = false;
+
+                if(salesRep){
+                    let salesRepRecord = record.load({
+                        type: record.Type.EMPLOYEE,
+                        id: salesRep,
+                        isDynamic: true
+                    });
+
+                    isInactive = salesRepRecord.getValue('isinactive');
+                }
                 
                 let externalCustomerRecord = record.create({
                     type: 'customrecord_jj_external_customer_cmtn',
@@ -274,7 +284,7 @@ define(['N/email', 'N/log', 'N/record', 'N/search', 'N/ui/serverWidget'],
                     pageObject: confirmationForm
                 });
 
-                if(salesRep) {
+                if(salesRep && isInactive != true) {
                     email.send({
                         author: -5,
                         recipients: salesRep,
